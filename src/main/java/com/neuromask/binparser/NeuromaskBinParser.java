@@ -145,15 +145,15 @@ public class NeuromaskBinParser {
                     LOGGER.info(String.format("size = %d, id = %d, time = %d", entrySize, entryId, entryTimestamp));
                     ObjectMapper mapper = new ObjectMapper();
                     ObjectNode rootNode = mapper.createObjectNode();
-                    rootNode.put("size", Integer.toString(entrySize));
-                    rootNode.put("uuid", Integer.toString(entryId));
-                    rootNode.put("_time", Integer.toString(entryTimestamp));
+                    rootNode.put("size", entrySize);
+                    rootNode.put("uuid", entryId);
+                    rootNode.put("_time", entryTimestamp);
                     for(int i = 11; i <= entry.length - 5 - 2; i += 5) {
                         if (entryFields.containsKey(entry[i])) {
                             int asInt = (entry[i+1] & 0xFF) | ((entry[i+2] & 0xFF) << 8) | ((entry[i+3] & 0xFF) << 16) | ((entry[i+4] & 0xFF) << 24);
                             float asFloat = roundToNDecimalPlaces(Float.intBitsToFloat(asInt), DEFAULT_FLOAT_PRECISION);
                             LOGGER.info(String.format("%s: %s", entryFields.get(entry[i]), String.format("%." + DEFAULT_FLOAT_PRECISION + "f", asFloat)));
-                            rootNode.put(entryFields.get(entry[i]), Float.toString(asFloat));
+                            rootNode.put(entryFields.get(entry[i]), asFloat);
                         }
                         else
                         {
