@@ -10,12 +10,12 @@
 
     <properties>
         <java.version>11</java.version>
-        <log4j-api.version>2.18.0</log4j-api.version>
-        <log4j-core.version>2.18.0</log4j-core.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <log4j-api.version>2.18.0</log4j-api.version>
+        <log4j-core.version>2.18.0</log4j-core.version>
     </properties>
 
     <dependencies>
