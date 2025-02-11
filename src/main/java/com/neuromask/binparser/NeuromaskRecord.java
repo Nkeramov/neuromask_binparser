@@ -6,7 +6,7 @@ import java.util.Map;
 
 class NeuromaskRecord implements Serializable {
 
-    public static Map<Byte, String> RECORD_PARAMETERS = new HashMap<Byte, String>() {{
+    public static Map<Byte, String> RECORD_FIELDS = new HashMap<>() {{
         put((byte) 0x10, "Exhaled carbon dioxide content");
         put((byte) 0x11, "Exhaled oxygen content");
         put((byte) 0x12, "Body temperature");
@@ -41,18 +41,38 @@ class NeuromaskRecord implements Serializable {
     private final int id;
     private final int size;
 
-    private final Map<String, Float> data = new HashMap<>();
+    public static final short RECORD_START_MARKER = (short) 0xF0AA;
+    public static final short RECORD_END_MARKER = (short) 0xF1AA;
+
+    private final Map<String, Double> data = new HashMap<>();
+
     NeuromaskRecord(int _time, int id, int size) {
         this._time = _time;
         this.id = id;
         this.size = size;
-        for(String key: RECORD_PARAMETERS.values()){
+        for(String key: RECORD_FIELDS.values()){
             data.put(key, null);
         }
     }
 
-    public void addParameter(String key, Float value){
+    public void addParameter(String key, String value) {
         if (data.containsKey(key))
-            this.data.put(key, value);
+            this.data.put(key, Double.valueOf(value));
+    }
+
+    public int getTime() {
+        return _time;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Map<String, Double> getData() {
+        return new HashMap<>(data);
     }
 }
