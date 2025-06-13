@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<Configuration status="warn" monitorInterval="30">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-level] %msg%n"/>
+            <PatternLayout pattern="%style{%d{HH:mm:ss.SSS}}{cyan} [%highlight{%-5level}] %style{%C{1.}}{bright,yellow} - %msg%n"/>
         </Console>
-        <File name="File" fileName="neuromask_binparser.log" append="true">
-            <PatternLayout>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C{1.} - %msg%n</Pattern>
-            </PatternLayout>
-        </File>
+        <RollingFile name="File"
+                     fileName="logs/neuromask_binparser.log"
+                     filePattern="logs/neuromask_binparser-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C{1.} (%L) - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+
+        <Async name="AsyncFile" bufferSize="1024">
+            <AppenderRef ref="File"/>
+        </Async>
     </Appenders>
+
     <Loggers>
+        <Logger name="com.neuromask.binparser" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncFile"/>
+        </Logger>
+
+        <Logger name="org.apache" level="warn"/>
+
         <Root level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
+            <AppenderRef ref="AsyncFile"/>
         </Root>
     </Loggers>
 </Configuration>
